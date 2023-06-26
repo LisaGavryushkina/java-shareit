@@ -15,6 +15,7 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     private final Map<Integer, Item> items;
     private int id = 0;
+    private final ItemMapper mapper;
 
     private int createId() {
         return ++id;
@@ -22,9 +23,9 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     @Override
     public ItemDto addItem(ItemDto itemDto, int userId) {
-        Item item = ItemMapper.toItem(createId(), itemDto, userId);
+        Item item = mapper.toItem(createId(), itemDto, userId);
         items.put(item.getId(), item);
-        return ItemMapper.toItemDto(item);
+        return mapper.toItemDto(item);
     }
 
     @Override
@@ -36,9 +37,9 @@ public class ItemRepositoryImpl implements ItemRepository {
         if (item.getOwner() != userId) {
             throw new UserNotFoundException(userId);
         }
-        Item updated = ItemMapper.toItemWithUpdate(itemDto, item);
+        Item updated = mapper.toItemWithUpdate(itemDto, item);
         items.put(updated.getId(), updated);
-        return ItemMapper.toItemDto(updated);
+        return mapper.toItemDto(updated);
     }
 
     @Override
@@ -46,14 +47,14 @@ public class ItemRepositoryImpl implements ItemRepository {
         if (items.get(itemId) == null) {
             throw new ItemNotFoundException(itemId);
         }
-        return ItemMapper.toItemDto(items.get(itemId));
+        return mapper.toItemDto(items.get(itemId));
     }
 
     @Override
     public List<ItemDto> getAllUserItems(int userId) {
         return items.values().stream()
                 .filter(item -> item.getOwner() == userId)
-                .map(ItemMapper::toItemDto)
+                .map(mapper::toItemDto)
                 .collect(Collectors.toList());
     }
 
@@ -66,7 +67,7 @@ public class ItemRepositoryImpl implements ItemRepository {
                 .filter(item -> item.getName().toLowerCase().contains(text.toLowerCase()) ||
                         item.getDescription().toLowerCase().contains(text.toLowerCase()))
                 .filter(Item::getAvailable)
-                .map(ItemMapper::toItemDto)
+                .map(mapper::toItemDto)
                 .collect(Collectors.toList());
     }
 }

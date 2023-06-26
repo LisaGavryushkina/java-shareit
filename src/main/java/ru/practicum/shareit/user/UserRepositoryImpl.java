@@ -13,6 +13,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     private final Map<Integer, User> users;
     private int id = 0;
+    private final UserMapper mapper;
 
     private int createId() {
         return ++id;
@@ -32,9 +33,9 @@ public class UserRepositoryImpl implements UserRepository {
         if (isEmailAlreadyExist(userDto, -1)) {
             throw new EmailAlreadyExistException(userDto.getEmail());
         }
-        User user = UserMapper.toUser(createId(), userDto);
+        User user = mapper.toUser(createId(), userDto);
         users.put(user.getId(), user);
-        return UserMapper.toUserDto(user);
+        return mapper.toUserDto(user);
     }
 
     @Override
@@ -45,9 +46,9 @@ public class UserRepositoryImpl implements UserRepository {
         if (userDto.getEmail() != null && isEmailAlreadyExist(userDto, userId)) {
             throw new EmailAlreadyExistException(userDto.getEmail());
         }
-        User user = UserMapper.toUserWithUpdate(userDto, users.get(userId));
+        User user = mapper.toUserWithUpdate(userDto, users.get(userId));
         users.put(user.getId(), user);
-        return UserMapper.toUserDto(user);
+        return mapper.toUserDto(user);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class UserRepositoryImpl implements UserRepository {
         if (users.get(userId) == null) {
             throw new UserNotFoundException(userId);
         }
-        return UserMapper.toUserDto(users.get(userId));
+        return mapper.toUserDto(users.get(userId));
     }
 
     @Override
@@ -66,7 +67,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<UserDto> getAllUsers() {
         return users.values().stream()
-                .map(UserMapper::toUserDto)
+                .map(mapper::toUserDto)
                 .collect(Collectors.toList());
     }
 }

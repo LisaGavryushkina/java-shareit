@@ -31,7 +31,7 @@ public class UserMapper {
     }
 
     public List<UserDto> toUserDto(List<User> users) {
-       return users.stream()
+        return users.stream()
                 .map(this::toUserDto)
                 .collect(Collectors.toList());
     }

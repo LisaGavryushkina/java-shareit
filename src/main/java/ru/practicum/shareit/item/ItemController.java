@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -37,17 +38,26 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ItemDto getItemById(@PathVariable int itemId) {
-        return itemService.getItemById(itemId);
+    public ItemWithBookingAndCommentsDto getItemById(@PathVariable int itemId,
+                                                     @RequestHeader("X-Sharer-User-Id") int userId) {
+        return itemService.getItemById(itemId, userId);
     }
 
     @GetMapping
-    public List<ItemDto> getAllUserItems(@RequestHeader("X-Sharer-User-Id") int userId) {
-        return itemService.getAllUserItems(userId);
+    public List<ItemWithBookingAndCommentsDto> findOwnerItems(@RequestHeader("X-Sharer-User-Id") int userId) {
+        return itemService.findOwnerItems(userId);
     }
 
     @GetMapping("/search")
     public List<ItemDto> findItems(@RequestParam(defaultValue = "") String text) {
         return itemService.findItems(text);
     }
+
+    @PostMapping("/{itemId}/comment")
+    public CommentDto postComment(@PathVariable int itemId, @RequestHeader("X-Sharer-User-Id") int userId,
+                                  @Valid @RequestBody CommentDto commentDto) {
+        return itemService.postComment(itemId, userId, commentDto, LocalDateTime.now());
+    }
+
+
 }

@@ -8,6 +8,7 @@ import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -16,14 +17,14 @@ import lombok.ToString;
  */
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
 @Getter
 @EqualsAndHashCode
 @ToString
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final int id;
-
+    private int id;
     @Setter
     private String name;
     @Setter

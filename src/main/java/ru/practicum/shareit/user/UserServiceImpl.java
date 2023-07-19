@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateUser(int userId, UserDto userDto) {
         Optional<User> user = userRepository.findById(userId);
-        if(user.isEmpty()) {
+        if (user.isEmpty()) {
             throw new UserNotFoundException(userId);
         }
         UserDto updated = mapper.toUserDto(userRepository.save(mapper.toUserWithUpdate(userDto, user.get())));
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(int userId) {
         Optional<User> user = userRepository.findById(userId);
-        if(user.isEmpty()) {
+        if (user.isEmpty()) {
             throw new UserNotFoundException(userId);
         }
         UserDto userDto = mapper.toUserDto(user.get());
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserById(int userId) {
         Optional<User> user = userRepository.findById(userId);
-        if(user.isEmpty()) {
+        if (user.isEmpty()) {
             throw new UserNotFoundException(userId);
         }
         userRepository.deleteById(userId);

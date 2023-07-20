@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.error_handler.InvalidActorException400;
-import ru.practicum.shareit.error_handler.InvalidActorException404;
+import ru.practicum.shareit.error_handler.InvalidActorException;
+import ru.practicum.shareit.error_handler.InvalidActorNotFoundException;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.item.ItemNotFoundException;
 import ru.practicum.shareit.item.ItemRepository;
@@ -33,10 +33,10 @@ public class BookingServiceImpl implements BookingService {
         int itemId = bookingRequestDto.getItemId();
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId));
         if (item.getOwner().getId() == userId) {
-            throw new InvalidActorException404("Владелец вещи не может ее забронировать");
+            throw new InvalidActorNotFoundException("Владелец вещи не может ее забронировать");
         }
         if (!item.isAvailable()) {
-            throw new InvalidActorException400("Вещь " + itemId + " недоступна для бронирования");
+            throw new InvalidActorException("Вещь " + itemId + " недоступна для бронирования");
         }
         Booking booking = mapper.toBooking(bookingRequestDto, item, user, BookingStatus.WAITING);
         BookingResponseDto saved = mapper.toBookingResponseDto(bookingRepository.save(booking));
@@ -49,14 +49,14 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new BookingNotFoundException(bookingId));
         if (booking.getStatus().equals(BookingStatus.APPROVED)) {
-            throw new InvalidActorException400("Нельзя изменить статус бронирования после подтверждения");
+            throw new InvalidActorException("Нельзя изменить статус бронирования после подтверждения");
         }
         if (userId != booking.getItem().getOwner().getId() && userId != booking.getBooker().getId()) {
-            throw new InvalidActorException400(
+            throw new InvalidActorException(
                     "У пользователя " + userId + " нет доступа к просмотру бронирования " + bookingId);
         }
         if (userId == booking.getBooker().getId()) {
-            throw new InvalidActorException404(
+            throw new InvalidActorNotFoundException(
                     "У арендатора " + userId + " нет доступа к изменению статуса бронирования " + bookingId);
         }
         BookingStatus status = approved ? BookingStatus.APPROVED : BookingStatus.REJECTED;
@@ -71,7 +71,7 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new BookingNotFoundException(bookingId));
         if (userId != booking.getItem().getOwner().getId() && userId != booking.getBooker().getId()) {
-            throw new InvalidActorException404(
+            throw new InvalidActorNotFoundException(
                     "У пользователя " + userId + " нет доступа к просмотру бронирования " + bookingId);
         }
         BookingResponseDto bookingResponseDto = mapper.toBookingResponseDto(booking);

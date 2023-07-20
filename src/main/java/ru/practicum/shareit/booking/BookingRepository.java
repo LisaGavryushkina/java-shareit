@@ -13,8 +13,8 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
     @Query(" select b from Booking as b " +
             " join b.booker as booker " +
-            " where booker.id = ?1 " +
-            " and ?2 between b.start and b.end " +
+            " where booker.id = :bookerId " +
+            " and :now between b.start and b.end " +
             " order by b.start desc ")
     List<Booking> findAllByBookerIdAndCurrent(Integer bookerId, LocalDateTime now);
 

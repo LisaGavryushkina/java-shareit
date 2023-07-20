@@ -14,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,7 +28,6 @@ import ru.practicum.shareit.user.User;
 @Table(name = "bookings")
 @ToString
 @Getter
-@EqualsAndHashCode
 @NoArgsConstructor
 public class Booking {
     @Id
@@ -64,5 +62,21 @@ public class Booking {
         this.item = item;
         this.booker = booker;
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Booking)) {
+            return false;
+        }
+        return id == ((Booking) o).getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
     }
 }

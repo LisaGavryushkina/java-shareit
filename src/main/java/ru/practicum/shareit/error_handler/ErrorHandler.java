@@ -51,14 +51,14 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleActorException400(InvalidActorException400 e) {
+    public ErrorResponse handleActorException400(InvalidActorException e) {
         log.error(e.getMessage());
         return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleInvalidActorException404(InvalidActorException404 e) {
+    public ErrorResponse handleInvalidActorException404(InvalidActorNotFoundException e) {
         log.error(e.getMessage());
         return new ErrorResponse(e.getMessage());
     }

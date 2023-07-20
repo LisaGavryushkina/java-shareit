@@ -16,7 +16,7 @@ import ru.practicum.shareit.booking.BookingForItemDto;
 import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.BookingNotFoundException;
 import ru.practicum.shareit.booking.BookingRepository;
-import ru.practicum.shareit.error_handler.InvalidActorException400;
+import ru.practicum.shareit.error_handler.InvalidActorException;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserNotFoundException;
 import ru.practicum.shareit.user.UserRepository;
@@ -62,7 +62,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemWithBookingAndCommentsDto getItemById(int itemId, int userId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId));
-        ItemWithBooking itemWithBooking = itemRepository.findItemAndLastNextBookingsByItemId(itemId,
+        ItemWithBooking itemWithBooking = itemRepository.findItemWithBookingsByItemId(itemId,
                 LocalDateTime.now());
         BookingForItemDto last = null;
         BookingForItemDto next = null;
@@ -90,7 +90,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemWithBookingAndCommentsDto> findOwnerItems(int userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        List<ItemWithBooking> items = itemRepository.findItemsAndLastNextBookingsByOwnerId(userId, LocalDateTime.now());
+        List<ItemWithBooking> items = itemRepository.findItemsWithBookingsByOwnerId(userId, LocalDateTime.now());
         Set<Integer> bookingIds = items.stream()
                 .flatMap(it -> concat(ofNullable(it.getLastBooking()), ofNullable(it.getNextBooking())))
                 .collect(Collectors.toSet());
@@ -129,10 +129,10 @@ public class ItemServiceImpl implements ItemService {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId));
         Booking booking = bookingRepository.findByItemIdAndBookerId(itemId, userId)
-                .orElseThrow(() -> new InvalidActorException400("Добавить комментарий можно только после оформления и" +
+                .orElseThrow(() -> new InvalidActorException("Добавить комментарий можно только после оформления и" +
                         " окончания бронирования"));
         if (booking.getEnd().isAfter(LocalDateTime.now())) {
-            throw new InvalidActorException400("Добавить комментарий можно только после окончания периода " +
+            throw new InvalidActorException("Добавить комментарий можно только после окончания периода " +
                     "бронирования");
         }
         Comment comment = commentMapper.toComment(commentDto, item, user, now);

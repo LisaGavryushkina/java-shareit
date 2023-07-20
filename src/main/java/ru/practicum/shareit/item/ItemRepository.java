@@ -36,7 +36,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
             " limit 1 ) as nextBooking " +
             " from items as i " +
             " where i.owner_id = :ownerId ")
-    List<ItemWithBooking> findItemsAndLastNextBookingsByOwnerId(int ownerId, LocalDateTime now);
+    List<ItemWithBooking> findItemsWithBookingsByOwnerId(int ownerId, LocalDateTime now);
 
     @Query(nativeQuery = true, value = "" +
             " select i.id, " +
@@ -59,7 +59,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
             " limit 1 ) as nextBooking " +
             " from items as i " +
             " where i.id = :itemId ")
-    ItemWithBooking findItemAndLastNextBookingsByItemId(int itemId, LocalDateTime now);
+    ItemWithBooking findItemWithBookingsByItemId(int itemId, LocalDateTime now);
 
     interface ItemWithBooking {
 

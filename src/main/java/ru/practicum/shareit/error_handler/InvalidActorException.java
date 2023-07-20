@@ -3,7 +3,7 @@ package ru.practicum.shareit.error_handler;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class InvalidActorException404 extends RuntimeException {
+public class InvalidActorException extends RuntimeException {
     private final String message;
 
     @Override

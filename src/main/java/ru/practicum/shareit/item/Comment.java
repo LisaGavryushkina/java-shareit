@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.EqualsAndHashCode;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -22,7 +22,7 @@ import ru.practicum.shareit.user.User;
 @NoArgsConstructor
 @ToString
 @Getter
-@EqualsAndHashCode
+@AllArgsConstructor
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,11 +42,19 @@ public class Comment {
 
     private LocalDateTime created;
 
-    public Comment(int id, String text, Item item, User author, LocalDateTime created) {
-        this.id = id;
-        this.text = text;
-        this.item = item;
-        this.author = author;
-        this.created = created;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Comment)) {
+            return false;
+        }
+        return id == ((Comment) o).getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
     }
 }

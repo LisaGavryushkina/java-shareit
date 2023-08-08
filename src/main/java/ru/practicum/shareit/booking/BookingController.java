@@ -45,14 +45,24 @@ public class BookingController {
 
     @GetMapping
     public List<BookingResponseDto> findUserBookings(@RequestHeader("X-Sharer-User-Id") int userId,
-                                                     @RequestParam(defaultValue = "ALL") String state) {
-        return bookingService.findUserBookings(userId, parseBookingState(state));
+                                                     @RequestParam(defaultValue = "ALL") String state,
+                                                     @RequestParam(defaultValue = "0") int from,
+                                                     @RequestParam(defaultValue = "15") int size) {
+        if (from < 0 || size <= 0) {
+            throw new IllegalArgumentException("Параметры from и size не могут быть отрицательными");
+        }
+        return bookingService.findUserBookings(userId, parseBookingState(state), from, size);
     }
 
     @GetMapping("/owner")
     public List<BookingResponseDto> findOwnerItemsBookings(@RequestHeader("X-Sharer-User-Id") int userId,
-                                                           @RequestParam(defaultValue = "ALL") String state) {
-        return bookingService.findOwnerItemsBookings(userId, parseBookingState(state));
+                                                           @RequestParam(defaultValue = "ALL") String state,
+                                                           @RequestParam(defaultValue = "0") int from,
+                                                           @RequestParam(defaultValue = "15") int size) {
+        if (from < 0 || size <= 0) {
+            throw new IllegalArgumentException("Параметры from и size не могут быть отрицательными");
+        }
+        return bookingService.findOwnerItemsBookings(userId, parseBookingState(state), from, size);
     }
 
     private static BookingState parseBookingState(String state) {
@@ -62,5 +72,4 @@ public class BookingController {
             throw new IllegalArgumentException("Unknown state: " + state, e);
         }
     }
-
 }

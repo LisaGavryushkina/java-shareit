@@ -1,13 +1,11 @@
 package ru.practicum.shareit.user;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import ru.practicum.shareit.error_handler.ShareitException;
 
-@RequiredArgsConstructor
-public class EmailAlreadyExistException extends RuntimeException {
+public class EmailAlreadyExistException extends ShareitException {
 
-    private final String email;
-
-    public String getMessage() {
-        return "Email: " + email + " занят";
+    public EmailAlreadyExistException(String email) {
+        super(HttpStatus.CONFLICT, "Email: " + email + " занят");
     }
 }

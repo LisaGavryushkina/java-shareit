@@ -1,16 +1,11 @@
 package ru.practicum.shareit.booking;
 
-import lombok.RequiredArgsConstructor;
-import ru.practicum.shareit.error_handler.NotFoundException;
+import ru.practicum.shareit.error_handler.ShareitNotFoundException;
 
-@RequiredArgsConstructor
-public class BookingNotFoundException extends NotFoundException {
+public class BookingNotFoundException extends ShareitNotFoundException {
 
-    private final int id;
-
-    @Override
-    public String getMessage() {
-        return String.format("Бронирование [%d] не найдено", id);
+    public BookingNotFoundException(int id) {
+        super(String.format("Бронирование [%d] не найдено", id));
     }
 }
 

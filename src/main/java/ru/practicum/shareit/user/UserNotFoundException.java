@@ -1,15 +1,10 @@
 package ru.practicum.shareit.user;
 
-import lombok.RequiredArgsConstructor;
-import ru.practicum.shareit.error_handler.NotFoundException;
+import ru.practicum.shareit.error_handler.ShareitNotFoundException;
 
-@RequiredArgsConstructor
-public class UserNotFoundException extends NotFoundException {
+public class UserNotFoundException extends ShareitNotFoundException {
 
-    private final int id;
-
-    @Override
-    public String getMessage() {
-        return String.format("Пользователь [%d] не найден", id);
+    public UserNotFoundException(int id) {
+        super(String.format("Пользователь [%d] не найден", id));
     }
 }

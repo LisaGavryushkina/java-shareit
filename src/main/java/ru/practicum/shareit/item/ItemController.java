@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -44,19 +43,29 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemWithBookingAndCommentsDto> findOwnerItems(@RequestHeader("X-Sharer-User-Id") int userId) {
-        return itemService.findOwnerItems(userId);
+    public List<ItemWithBookingAndCommentsDto> findOwnerItems(@RequestHeader("X-Sharer-User-Id") int userId,
+                                                              @RequestParam(defaultValue = "0") int from,
+                                                              @RequestParam(defaultValue = "15") int size) {
+        if (from < 0 || size <= 0) {
+            throw new IllegalArgumentException("Параметры from и size не могут быть отрицательными");
+        }
+        return itemService.findOwnerItems(userId, from, size);
     }
 
     @GetMapping("/search")
-    public List<ItemDto> findItems(@RequestParam(defaultValue = "") String text) {
-        return itemService.findItems(text);
+    public List<ItemDto> findItems(@RequestParam(defaultValue = "") String text,
+                                   @RequestParam(defaultValue = "0") int from,
+                                   @RequestParam(defaultValue = "15") int size) {
+        if (from < 0 || size <= 0) {
+            throw new IllegalArgumentException("Параметры from и size не могут быть отрицательными");
+        }
+        return itemService.findItems(text, from, size);
     }
 
     @PostMapping("/{itemId}/comment")
     public CommentDto postComment(@PathVariable int itemId, @RequestHeader("X-Sharer-User-Id") int userId,
                                   @Valid @RequestBody CommentDto commentDto) {
-        return itemService.postComment(itemId, userId, commentDto, LocalDateTime.now());
+        return itemService.postComment(itemId, userId, commentDto);
     }
 
 

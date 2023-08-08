@@ -1,7 +1,6 @@
 package ru.practicum.shareit.user;
 
 import java.util.List;
-import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +16,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto addUser(UserDto userDto) {
-        User user = userRepository.save(mapper.toUser(0, userDto));
+        User user = userRepository.save(mapper.toUser(userDto));
         UserDto added = mapper.toUserDto(user);
         log.info("Добавлен пользователь: {}", added);
         return added;
@@ -25,32 +24,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateUser(int userId, UserDto userDto) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            throw new UserNotFoundException(userId);
-        }
-        UserDto updated = mapper.toUserDto(userRepository.save(mapper.toUserWithUpdate(userDto, user.get())));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        UserDto updated = mapper.toUserDto(userRepository.save(mapper.toUserWithUpdate(userDto, user)));
         log.info("Данные о пользователе [{}] обновлены: {}", userDto, updated);
         return updated;
     }
 
     @Override
     public UserDto getUserById(int userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            throw new UserNotFoundException(userId);
-        }
-        UserDto userDto = mapper.toUserDto(user.get());
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        UserDto userDto = mapper.toUserDto(user);
         log.info("Вернули пользователя: {}", userDto);
         return userDto;
     }
 
     @Override
     public void deleteUserById(int userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            throw new UserNotFoundException(userId);
-        }
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         userRepository.deleteById(userId);
         log.info("Удалили пользователя: {}", user);
     }

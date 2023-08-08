@@ -14,8 +14,8 @@ public class UserMapper {
                 user.getEmail());
     }
 
-    public User toUser(int userId, UserDto userDto) {
-        return new User(userId,
+    public User toUser(UserDto userDto) {
+        return new User(0,
                 userDto.getName(),
                 userDto.getEmail());
     }

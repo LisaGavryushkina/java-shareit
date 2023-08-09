@@ -282,13 +282,14 @@ public class BookingServiceUnitTest {
         List<BookingResponseDto> expected = List.of(BOOKING_RESPONSE_1_DTO);
 
         when(userRepository.findById(2)).thenReturn(Optional.of(BOOKER));
-        when(bookingRepository.findAllByBookerIdAndCurrent(eq(2), any(LocalDateTime.class),
-                eq(new OffsetPageRequest(0, 5)))).thenReturn(bookings);
+        when(bookingRepository.findAllByBookerIdAndCurrentOrderByStartDesc(eq(2), any(LocalDateTime.class),
+                eq(new OffsetPageRequest(0, 5, Sort.by("start").descending()))))
+                .thenReturn(bookings);
         when(mapper.toBookingResponseDto(BOOKING_1)).thenReturn(BOOKING_RESPONSE_1_DTO);
 
         List<BookingResponseDto> actual = bookingService.findUserBookings(2, BookingState.CURRENT, 0, 5);
-        verify(bookingRepository, times(1)).findAllByBookerIdAndCurrent(eq(2), any(LocalDateTime.class),
-                eq(new OffsetPageRequest(0, 5)));
+        verify(bookingRepository, times(1)).findAllByBookerIdAndCurrentOrderByStartDesc(eq(2), any(LocalDateTime.class),
+                eq(new OffsetPageRequest(0, 5, Sort.by("start").descending())));
         assertThat(actual, equalTo(expected));
     }
 
@@ -373,11 +374,14 @@ public class BookingServiceUnitTest {
         List<BookingResponseDto> expected = List.of(BOOKING_RESPONSE_1_DTO);
 
         when(userRepository.findById(1)).thenReturn(Optional.of(OWNER));
-        when(bookingRepository.findAllByOwnerItems(1, new OffsetPageRequest(0, 5))).thenReturn(bookings);
+        when(bookingRepository.findAllByOwnerItemsOrderByStartDesc(1,
+                new OffsetPageRequest(0, 5, Sort.by("start").descending())))
+                .thenReturn(bookings);
         when(mapper.toBookingResponseDto(BOOKING_1)).thenReturn(BOOKING_RESPONSE_1_DTO);
 
         List<BookingResponseDto> actual = bookingService.findOwnerItemsBookings(1, BookingState.ALL, 0, 5);
-        verify(bookingRepository, times(1)).findAllByOwnerItems(1, new OffsetPageRequest(0, 5));
+        verify(bookingRepository, times(1)).findAllByOwnerItemsOrderByStartDesc(1, new OffsetPageRequest(0, 5,
+                Sort.by("start").descending()));
         assertThat(actual, equalTo(expected));
     }
 
@@ -387,14 +391,15 @@ public class BookingServiceUnitTest {
         List<BookingResponseDto> expected = List.of(BOOKING_RESPONSE_1_DTO);
 
         when(userRepository.findById(1)).thenReturn(Optional.of(OWNER));
-        when(bookingRepository.findAllByOwnerItemsAndCurrent(eq(1), any(LocalDateTime.class),
-                eq(new OffsetPageRequest(0, 5))))
+        when(bookingRepository.findAllByOwnerItemsAndCurrentOrderByStartDesc(eq(1), any(LocalDateTime.class),
+                eq(new OffsetPageRequest(0, 5, Sort.by("start").descending()))))
                 .thenReturn(bookings);
         when(mapper.toBookingResponseDto(BOOKING_1)).thenReturn(BOOKING_RESPONSE_1_DTO);
 
         List<BookingResponseDto> actual = bookingService.findOwnerItemsBookings(1, BookingState.CURRENT, 0, 5);
-        verify(bookingRepository, times(1)).findAllByOwnerItemsAndCurrent(eq(1), any(LocalDateTime.class),
-                eq(new OffsetPageRequest(0, 5)));
+        verify(bookingRepository, times(1)).findAllByOwnerItemsAndCurrentOrderByStartDesc(eq(1),
+                any(LocalDateTime.class),
+                eq(new OffsetPageRequest(0, 5, Sort.by("start").descending())));
         assertThat(actual, equalTo(expected));
     }
 
@@ -404,13 +409,14 @@ public class BookingServiceUnitTest {
         List<BookingResponseDto> expected = List.of(BOOKING_RESPONSE_1_DTO);
 
         when(userRepository.findById(1)).thenReturn(Optional.of(OWNER));
-        when(bookingRepository.findAllByOwnerItemsAndPast(eq(1), any(LocalDateTime.class),
-                eq(new OffsetPageRequest(0, 5)))).thenReturn(bookings);
+        when(bookingRepository.findAllByOwnerItemsAndPastOrderByStartDesc(eq(1), any(LocalDateTime.class),
+                eq(new OffsetPageRequest(0, 5, Sort.by("start").descending()))))
+                .thenReturn(bookings);
         when(mapper.toBookingResponseDto(BOOKING_1)).thenReturn(BOOKING_RESPONSE_1_DTO);
 
         List<BookingResponseDto> actual = bookingService.findOwnerItemsBookings(1, BookingState.PAST, 0, 5);
-        verify(bookingRepository, times(1)).findAllByOwnerItemsAndPast(eq(1), any(LocalDateTime.class),
-                eq(new OffsetPageRequest(0, 5)));
+        verify(bookingRepository, times(1)).findAllByOwnerItemsAndPastOrderByStartDesc(eq(1), any(LocalDateTime.class),
+                eq(new OffsetPageRequest(0, 5, Sort.by("start").descending())));
         assertThat(actual, equalTo(expected));
     }
 
@@ -420,14 +426,15 @@ public class BookingServiceUnitTest {
         List<BookingResponseDto> expected = List.of(BOOKING_RESPONSE_1_DTO);
 
         when(userRepository.findById(1)).thenReturn(Optional.of(OWNER));
-        when(bookingRepository.findAllByOwnerItemsAndFuture(eq(1), any(LocalDateTime.class),
-                eq(new OffsetPageRequest(0, 5))))
+        when(bookingRepository.findAllByOwnerItemsAndFutureOrderByStartDesc(eq(1), any(LocalDateTime.class),
+                eq(new OffsetPageRequest(0, 5, Sort.by("start").descending()))))
                 .thenReturn(bookings);
         when(mapper.toBookingResponseDto(BOOKING_1)).thenReturn(BOOKING_RESPONSE_1_DTO);
 
         List<BookingResponseDto> actual = bookingService.findOwnerItemsBookings(1, BookingState.FUTURE, 0, 5);
-        verify(bookingRepository, times(1)).findAllByOwnerItemsAndFuture(eq(1), any(LocalDateTime.class),
-                eq(new OffsetPageRequest(0, 5)));
+        verify(bookingRepository, times(1)).findAllByOwnerItemsAndFutureOrderByStartDesc(eq(1),
+                any(LocalDateTime.class),
+                eq(new OffsetPageRequest(0, 5, Sort.by("start").descending())));
         assertThat(actual, equalTo(expected));
     }
 
@@ -437,14 +444,14 @@ public class BookingServiceUnitTest {
         List<BookingResponseDto> expected = List.of(BOOKING_RESPONSE_1_DTO);
 
         when(userRepository.findById(1)).thenReturn(Optional.of(OWNER));
-        when(bookingRepository.findAllByOwnerItemsAndStatus(1, BookingStatus.WAITING, new OffsetPageRequest(0, 5)))
+        when(bookingRepository.findAllByOwnerItemsAndStatusOrderByStartDesc(1, BookingStatus.WAITING,
+                new OffsetPageRequest(0, 5, Sort.by("start").descending())))
                 .thenReturn(bookings);
         when(mapper.toBookingResponseDto(BOOKING_1)).thenReturn(BOOKING_RESPONSE_1_DTO);
 
         List<BookingResponseDto> actual = bookingService.findOwnerItemsBookings(1, BookingState.WAITING, 0, 5);
-        verify(bookingRepository, times(1)).findAllByOwnerItemsAndStatus(1, BookingStatus.WAITING,
-                new OffsetPageRequest(0,
-                        5));
+        verify(bookingRepository, times(1)).findAllByOwnerItemsAndStatusOrderByStartDesc(1, BookingStatus.WAITING,
+                new OffsetPageRequest(0, 5, Sort.by("start").descending()));
         assertThat(actual, equalTo(expected));
     }
 
@@ -454,14 +461,14 @@ public class BookingServiceUnitTest {
         List<BookingResponseDto> expected = List.of(BOOKING_RESPONSE_1_DTO);
 
         when(userRepository.findById(1)).thenReturn(Optional.of(OWNER));
-        when(bookingRepository.findAllByOwnerItemsAndStatus(1, BookingStatus.REJECTED, new OffsetPageRequest(0, 5)))
+        when(bookingRepository.findAllByOwnerItemsAndStatusOrderByStartDesc(1, BookingStatus.REJECTED,
+                new OffsetPageRequest(0, 5, Sort.by("start").descending())))
                 .thenReturn(bookings);
         when(mapper.toBookingResponseDto(BOOKING_1)).thenReturn(BOOKING_RESPONSE_1_DTO);
 
         List<BookingResponseDto> actual = bookingService.findOwnerItemsBookings(1, BookingState.REJECTED, 0, 5);
-        verify(bookingRepository, times(1)).findAllByOwnerItemsAndStatus(1, BookingStatus.REJECTED,
-                new OffsetPageRequest(0,
-                        5));
+        verify(bookingRepository, times(1)).findAllByOwnerItemsAndStatusOrderByStartDesc(1, BookingStatus.REJECTED,
+                new OffsetPageRequest(0, 5, Sort.by("start").descending()));
         assertThat(actual, equalTo(expected));
     }
 }

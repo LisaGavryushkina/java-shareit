@@ -90,8 +90,8 @@ public class BookingServiceImpl implements BookingService {
                 return bookingRepository.findAllByBookerIdOrderByStartDesc(userId, new OffsetPageRequest(from, size,
                         Sort.by("start").descending()));
             case CURRENT:
-                return bookingRepository.findAllByBookerIdAndCurrent(userId, LocalDateTime.now(),
-                        new OffsetPageRequest(from, size));
+                return bookingRepository.findAllByBookerIdAndCurrentOrderByStartDesc(userId, LocalDateTime.now(),
+                        new OffsetPageRequest(from, size, Sort.by("start").descending()));
             case PAST:
                 return bookingRepository.findAllByBookerIdAndEndBeforeOrderByStartDesc(userId, LocalDateTime.now(),
                         new OffsetPageRequest(from, size));
@@ -101,11 +101,11 @@ public class BookingServiceImpl implements BookingService {
             case WAITING:
                 return bookingRepository.findByBookerIdAndStatus(userId, BookingStatus.WAITING,
                         new OffsetPageRequest(from,
-                        size));
+                                size));
             case REJECTED:
                 return bookingRepository.findByBookerIdAndStatus(userId, BookingStatus.REJECTED,
                         new OffsetPageRequest(from,
-                        size));
+                                size));
             default:
                 throw new IllegalArgumentException();
         }
@@ -123,22 +123,23 @@ public class BookingServiceImpl implements BookingService {
     private Page<Booking> doFindOwnerItemsBookings(int userId, BookingState state, int from, int size) {
         switch (state) {
             case ALL:
-                return bookingRepository.findAllByOwnerItems(userId, new OffsetPageRequest(from, size));
+                return bookingRepository.findAllByOwnerItemsOrderByStartDesc(userId, new OffsetPageRequest(from, size,
+                        Sort.by("start").descending()));
             case CURRENT:
-                return bookingRepository.findAllByOwnerItemsAndCurrent(userId, LocalDateTime.now(),
-                        new OffsetPageRequest(from, size));
+                return bookingRepository.findAllByOwnerItemsAndCurrentOrderByStartDesc(userId, LocalDateTime.now(),
+                        new OffsetPageRequest(from, size, Sort.by("start").descending()));
             case PAST:
-                return bookingRepository.findAllByOwnerItemsAndPast(userId, LocalDateTime.now(),
-                        new OffsetPageRequest(from, size));
+                return bookingRepository.findAllByOwnerItemsAndPastOrderByStartDesc(userId, LocalDateTime.now(),
+                        new OffsetPageRequest(from, size, Sort.by("start").descending()));
             case FUTURE:
-                return bookingRepository.findAllByOwnerItemsAndFuture(userId, LocalDateTime.now(),
-                        new OffsetPageRequest(from, size));
+                return bookingRepository.findAllByOwnerItemsAndFutureOrderByStartDesc(userId, LocalDateTime.now(),
+                        new OffsetPageRequest(from, size, Sort.by("start").descending()));
             case WAITING:
-                return bookingRepository.findAllByOwnerItemsAndStatus(userId, BookingStatus.WAITING,
-                        new OffsetPageRequest(from, size));
+                return bookingRepository.findAllByOwnerItemsAndStatusOrderByStartDesc(userId, BookingStatus.WAITING,
+                        new OffsetPageRequest(from, size, Sort.by("start").descending()));
             case REJECTED:
-                return bookingRepository.findAllByOwnerItemsAndStatus(userId, BookingStatus.REJECTED,
-                        new OffsetPageRequest(from, size));
+                return bookingRepository.findAllByOwnerItemsAndStatusOrderByStartDesc(userId, BookingStatus.REJECTED,
+                        new OffsetPageRequest(from, size, Sort.by("start").descending()));
             default:
                 throw new IllegalArgumentException();
         }

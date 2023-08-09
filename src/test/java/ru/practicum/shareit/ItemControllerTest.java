@@ -45,7 +45,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ItemControllerTest {
 
     public static final ItemDto ITEM_DTO_1 = new ItemDto(1, "knife", "for vegetables", true, null);
-    public static final ItemDto ITEM_DTO_2 = new ItemDto(2, "plate", "for soup", true, null);
     public static final ItemDto ITEM_DTO_1_UPDATED = new ItemDto(1, "knife", "for vegetables", false, null);
     public static final BookingForItemDto LAST_BOOKING = new BookingForItemDto(1, LocalDateTime.now().minusDays(6),
             LocalDateTime.now().minusDays(3), 1, 2, BookingStatus.APPROVED);
@@ -231,7 +230,7 @@ public class ItemControllerTest {
                 )
                 .andExpect(status().isBadRequest())
                 .andDo(print())
-                .andExpect(jsonPath("$.error", is("Параметры from и size не могут быть отрицательными")));
+                .andExpect(jsonPath("$.error", is("findOwnerItems.from: must be greater than or equal to 0")));
     }
 
     @Test
@@ -243,7 +242,7 @@ public class ItemControllerTest {
                 )
                 .andExpect(status().isBadRequest())
                 .andDo(print())
-                .andExpect(jsonPath("$.error", is("Параметры from и size не могут быть отрицательными")));
+                .andExpect(jsonPath("$.error", is("findOwnerItems.size: must be greater than or equal to 1")));
     }
 
     @Test
@@ -299,7 +298,7 @@ public class ItemControllerTest {
                 )
                 .andExpect(status().isBadRequest())
                 .andDo(print())
-                .andExpect(jsonPath("$.error", is("Параметры from и size не могут быть отрицательными")));
+                .andExpect(jsonPath("$.error", is("findItems.from: must be greater than or equal to 0")));
     }
 
     @Test
@@ -310,7 +309,7 @@ public class ItemControllerTest {
                 )
                 .andExpect(status().isBadRequest())
                 .andDo(print())
-                .andExpect(jsonPath("$.error", is("Параметры from и size не могут быть отрицательными")));
+                .andExpect(jsonPath("$.error", is("findItems.size: must be greater than or equal to 1")));
     }
 
     @Test

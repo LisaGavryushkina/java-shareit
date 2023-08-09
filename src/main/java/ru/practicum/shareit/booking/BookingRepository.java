@@ -23,9 +23,8 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     @Query(" select b from Booking as b " +
             " join b.booker as booker " +
             " where booker.id = :bookerId " +
-            " and :now between b.start and b.end " +
-            " order by b.start desc ")
-    Page<Booking> findAllByBookerIdAndCurrent(int bookerId, LocalDateTime now, Pageable pageable);
+            " and :now between b.start and b.end ")
+    Page<Booking> findAllByBookerIdAndCurrentOrderByStartDesc(int bookerId, LocalDateTime now, Pageable pageable);
 
     Page<Booking> findAllByBookerIdOrderByStartDesc(int bookerId, Pageable pageable);
 
@@ -38,9 +37,8 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             " where item.id in " +
             "( select i.id from Item as i " +
             " join i.owner as owner " +
-            " where owner.id = ?1 ) " +
-            " order by b.start desc ")
-    Page<Booking> findAllByOwnerItems(int ownerId, Pageable pageable);
+            " where owner.id = ?1 ) ")
+    Page<Booking> findAllByOwnerItemsOrderByStartDesc(int ownerId, Pageable pageable);
 
     @Query(" select b from Booking as b " +
             " join b.item as item " +
@@ -48,9 +46,8 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             "( select i.id from Item as i " +
             " join i.owner as owner " +
             " where owner.id = ?1 ) " +
-            " and ?2 between b.start and b.end " +
-            " order by b.start desc ")
-    Page<Booking> findAllByOwnerItemsAndCurrent(int ownerId, LocalDateTime now, Pageable pageable);
+            " and ?2 between b.start and b.end ")
+    Page<Booking> findAllByOwnerItemsAndCurrentOrderByStartDesc(int ownerId, LocalDateTime now, Pageable pageable);
 
     @Query(" select b from Booking as b " +
             " join b.item as item " +
@@ -58,9 +55,8 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             "( select i.id from Item as i " +
             " join i.owner as owner " +
             "where owner.id = ?1 ) " +
-            " and b.end < ?2 " +
-            " order by b.start desc ")
-    Page<Booking> findAllByOwnerItemsAndPast(int ownerId, LocalDateTime now, Pageable pageable);
+            " and b.end < ?2 ")
+    Page<Booking> findAllByOwnerItemsAndPastOrderByStartDesc(int ownerId, LocalDateTime now, Pageable pageable);
 
     @Query(" select b from Booking as b " +
             " join b.item as item " +
@@ -68,9 +64,8 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             "( select i.id from Item as i " +
             " join i.owner as owner " +
             "where owner.id = ?1 ) " +
-            " and b.start > ?2 " +
-            " order by b.start desc ")
-    Page<Booking> findAllByOwnerItemsAndFuture(int ownerId, LocalDateTime now, Pageable pageable);
+            " and b.start > ?2 ")
+    Page<Booking> findAllByOwnerItemsAndFutureOrderByStartDesc(int ownerId, LocalDateTime now, Pageable pageable);
 
     @Query(" select b from Booking as b " +
             " join b.item as item " +
@@ -78,9 +73,8 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             "( select i.id from Item as i " +
             " join i.owner as owner " +
             "where owner.id = ?1 ) " +
-            " and b.status = ?2 " +
-            " order by b.start desc ")
-    Page<Booking> findAllByOwnerItemsAndStatus(int ownerId, BookingStatus status, Pageable pageable);
+            " and b.status = ?2 ")
+    Page<Booking> findAllByOwnerItemsAndStatusOrderByStartDesc(int ownerId, BookingStatus status, Pageable pageable);
 
     @Query(nativeQuery = true, value =
             " select b.* from bookings as b " +

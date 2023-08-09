@@ -4,8 +4,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/requests")
+@Validated
 public class ItemRequestController {
     private final ItemRequestService itemRequestService;
 
@@ -36,12 +39,9 @@ public class ItemRequestController {
     }
 
     @GetMapping("/all")
-    public List<ItemRequestDto> findAllRequests(@RequestParam(defaultValue = "0") int from,
-                                                @RequestParam(defaultValue = "15") int size,
+    public List<ItemRequestDto> findAllRequests(@RequestParam(defaultValue = "0") @Min(0) int from,
+                                                @RequestParam(defaultValue = "15") @Min(1) int size,
                                                 @RequestHeader("X-Sharer-User-Id") int userId) {
-        if (from < 0 || size <= 0) {
-            throw new IllegalArgumentException("Параметры from и size не могут быть отрицательными");
-        }
         return itemRequestService.findAllRequests(from, size, userId);
     }
 

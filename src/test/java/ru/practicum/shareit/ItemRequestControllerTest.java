@@ -183,7 +183,7 @@ public class ItemRequestControllerTest {
                 )
                 .andExpect(status().isBadRequest())
                 .andDo(print())
-                .andExpect(jsonPath("$.error", is("Параметры from и size не могут быть отрицательными")));
+                .andExpect(jsonPath("$.error", is("findAllRequests.from: must be greater than or equal to 0")));
     }
 
     @Test
@@ -195,7 +195,7 @@ public class ItemRequestControllerTest {
                 )
                 .andExpect(status().isBadRequest())
                 .andDo(print())
-                .andExpect(jsonPath("$.error", is("Параметры from и size не могут быть отрицательными")));
+                .andExpect(jsonPath("$.error", is("findAllRequests.size: must be greater than or equal to 1")));
     }
 
     @Test

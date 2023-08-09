@@ -121,7 +121,7 @@ public class BookingRepositoryTest {
         testEntityManager.merge(BOOKING_IN_CURRENT_SHOULD_BE_FIRST);
         testEntityManager.merge(BOOKING_IN_PAST_SHOULD_NOT_BE_SELECTED);
 
-        List<Booking> bookings = bookingRepository.findAllByBookerIdAndCurrent(BOOKER.getId(), LocalDateTime.now(),
+        List<Booking> bookings = bookingRepository.findAllByBookerIdAndCurrentOrderByStartDesc(BOOKER.getId(), LocalDateTime.now(),
                 new OffsetPageRequest(0, 5)).getContent();
 
         assertThat(bookings, hasSize(1));
@@ -174,7 +174,7 @@ public class BookingRepositoryTest {
         testEntityManager.merge(BOOKING_IN_FUTURE_SHOULD_BE_FIRST);
         testEntityManager.merge(BOOKING_IN_FUTURE_SHOULD_BE_SECOND);
 
-        List<Booking> bookings = bookingRepository.findAllByOwnerItems(OWNER.getId(),
+        List<Booking> bookings = bookingRepository.findAllByOwnerItemsOrderByStartDesc(OWNER.getId(),
                 new OffsetPageRequest(0, 5)).getContent();
 
         assertThat(bookings, hasSize(2));
@@ -188,7 +188,7 @@ public class BookingRepositoryTest {
         testEntityManager.merge(BOOKING_IN_CURRENT_SHOULD_BE_SECOND);
         testEntityManager.merge(BOOKING_IN_PAST_SHOULD_NOT_BE_SELECTED);
 
-        List<Booking> bookings = bookingRepository.findAllByOwnerItemsAndCurrent(OWNER.getId(), LocalDateTime.now(),
+        List<Booking> bookings = bookingRepository.findAllByOwnerItemsAndCurrentOrderByStartDesc(OWNER.getId(), LocalDateTime.now(),
                 new OffsetPageRequest(0, 5)).getContent();
 
         assertThat(bookings, hasSize(2));
@@ -202,7 +202,7 @@ public class BookingRepositoryTest {
         testEntityManager.merge(BOOKING_IN_PAST_SHOULD_BE_SECOND);
         testEntityManager.merge(BOOKING_IN_FUTURE_SHOULD_NOT_BE_SELECTED);
 
-        List<Booking> bookings = bookingRepository.findAllByOwnerItemsAndPast(OWNER.getId(), LocalDateTime.now(),
+        List<Booking> bookings = bookingRepository.findAllByOwnerItemsAndPastOrderByStartDesc(OWNER.getId(), LocalDateTime.now(),
                 new OffsetPageRequest(0, 5)).getContent();
         System.out.println(bookings);
 
@@ -217,7 +217,7 @@ public class BookingRepositoryTest {
         testEntityManager.merge(BOOKING_IN_FUTURE_SHOULD_BE_SECOND);
         testEntityManager.merge(BOOKING_IN_PAST_SHOULD_NOT_BE_SELECTED);
 
-        List<Booking> bookings = bookingRepository.findAllByOwnerItemsAndFuture(OWNER.getId(),
+        List<Booking> bookings = bookingRepository.findAllByOwnerItemsAndFutureOrderByStartDesc(OWNER.getId(),
                 LocalDateTime.now(), new OffsetPageRequest(0, 5)).getContent();
 
         assertThat(bookings, hasSize(2));
@@ -230,7 +230,7 @@ public class BookingRepositoryTest {
         testEntityManager.merge(BOOKING_WAITING);
         testEntityManager.merge(BOOKING_REJECTED);
 
-        List<Booking> bookings = bookingRepository.findAllByOwnerItemsAndStatus(OWNER.getId(), BookingStatus.WAITING,
+        List<Booking> bookings = bookingRepository.findAllByOwnerItemsAndStatusOrderByStartDesc(OWNER.getId(), BookingStatus.WAITING,
                 new OffsetPageRequest(0, 5)).getContent();
 
         assertThat(bookings, hasSize(1));

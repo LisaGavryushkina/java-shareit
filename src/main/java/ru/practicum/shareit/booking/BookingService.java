@@ -10,7 +10,7 @@ public interface BookingService {
 
     BookingResponseDto findBooking(int bookingId, int userId);
 
-    List<BookingResponseDto> findUserBookings(int userId, BookingState state);
+    List<BookingResponseDto> findUserBookings(int userId, BookingState state, int from, int size);
 
-    List<BookingResponseDto> findOwnerItemsBookings(int userId, BookingState state);
+    List<BookingResponseDto> findOwnerItemsBookings(int userId, BookingState state, int from, int size);
 }

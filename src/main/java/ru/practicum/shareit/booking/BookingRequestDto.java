@@ -6,18 +6,20 @@ import javax.validation.constraints.FutureOrPresent;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.extern.jackson.Jacksonized;
 
 @Data
+@Jacksonized
 @Builder
 @StartBeforeEndDateValid
-public class BookingRequestDto implements StartEndDateable {
-    private final int id;
+public class BookingRequestDto implements HasStartEndDate {
+    private int id;
     @FutureOrPresent
-    private final LocalDateTime start;
+    private LocalDateTime start;
     @FutureOrPresent
-    private final LocalDateTime end;
-    private final int itemId;
-    private final int bookerId;
-    private final BookingStatus status;
+    private LocalDateTime end;
+    private int itemId;
+    private int bookerId;
+    private BookingStatus status;
 
 }

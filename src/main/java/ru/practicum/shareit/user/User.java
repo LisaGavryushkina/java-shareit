@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.EqualsAndHashCode;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,8 +18,8 @@ import lombok.ToString;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
-@EqualsAndHashCode
 @ToString
 public class User {
     @Id
@@ -30,9 +30,19 @@ public class User {
     @Setter
     private String email;
 
-    public User(int id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof User)) {
+            return false;
+        }
+        return id == ((User) o).getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
     }
 }

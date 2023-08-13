@@ -5,14 +5,14 @@ import java.time.LocalDateTime;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class StartBeforeEndDateValidator implements ConstraintValidator<StartBeforeEndDateValid, StartEndDateable> {
+public class StartBeforeEndDateValidator implements ConstraintValidator<StartBeforeEndDateValid, HasStartEndDate> {
 
     @Override
     public void initialize(StartBeforeEndDateValid annotation) {
     }
 
     @Override
-    public boolean isValid(StartEndDateable bean, ConstraintValidatorContext context) {
+    public boolean isValid(HasStartEndDate bean, ConstraintValidatorContext context) {
         final LocalDateTime startDate = bean.getStart();
         final LocalDateTime endDate = bean.getEnd();
 

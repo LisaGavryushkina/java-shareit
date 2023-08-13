@@ -1,15 +1,10 @@
 package ru.practicum.shareit.item;
 
-import lombok.RequiredArgsConstructor;
-import ru.practicum.shareit.error_handler.NotFoundException;
+import ru.practicum.shareit.error_handler.ShareitNotFoundException;
 
-@RequiredArgsConstructor
-public class ItemNotFoundException extends NotFoundException {
+public class ItemNotFoundException extends ShareitNotFoundException {
 
-    private final int id;
-
-    @Override
-    public String getMessage() {
-        return String.format("Вещь [%d] не найдена", id);
+    public ItemNotFoundException(int id) {
+        super(String.format("Вещь [%d] не найдена", id));
     }
 }

@@ -2,17 +2,29 @@ package ru.practicum.shareit.item;
 
 import java.time.LocalDateTime;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.extern.jackson.Jacksonized;
 
-@Data
+@ToString
+@Getter
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
+@Jacksonized
 public class CommentDto {
 
-    private final int id;
-    @NotEmpty
-    private final String text;
-    private final int itemId;
-    private final String authorName;
-    private final LocalDateTime created;
+    private int id;
+    @NotBlank
+    private String text;
+    private int itemId;
+    private String authorName;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private LocalDateTime created;
 }

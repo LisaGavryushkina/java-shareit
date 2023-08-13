@@ -3,8 +3,10 @@ package ru.practicum.shareit.booking;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/bookings")
+@Validated
 public class BookingController {
 
     private final BookingService bookingService;
@@ -45,22 +48,18 @@ public class BookingController {
 
     @GetMapping
     public List<BookingResponseDto> findUserBookings(@RequestHeader("X-Sharer-User-Id") int userId,
-                                                     @RequestParam(defaultValue = "ALL") String state) {
-        return bookingService.findUserBookings(userId, parseBookingState(state));
+                                                     @RequestParam(defaultValue = "ALL") BookingState state,
+                                                     @RequestParam(defaultValue = "0") @Min(0) int from,
+                                                     @RequestParam(defaultValue = "15") @Min(1) int size) {
+        return bookingService.findUserBookings(userId, state, from, size);
     }
 
     @GetMapping("/owner")
     public List<BookingResponseDto> findOwnerItemsBookings(@RequestHeader("X-Sharer-User-Id") int userId,
-                                                           @RequestParam(defaultValue = "ALL") String state) {
-        return bookingService.findOwnerItemsBookings(userId, parseBookingState(state));
-    }
-
-    private static BookingState parseBookingState(String state) {
-        try {
-            return BookingState.valueOf(state);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Unknown state: " + state, e);
-        }
+                                                           @RequestParam(defaultValue = "ALL") BookingState state,
+                                                           @RequestParam(defaultValue = "0") @Min(0) int from,
+                                                           @RequestParam(defaultValue = "15") @Min(1) int size) {
+        return bookingService.findOwnerItemsBookings(userId, state, from, size);
     }
 
 }

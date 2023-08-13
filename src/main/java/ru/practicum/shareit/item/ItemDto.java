@@ -1,21 +1,31 @@
 package ru.practicum.shareit.item;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.extern.jackson.Jacksonized;
 
 /**
  * TODO Sprint add-controllers.
  */
-@Data
+@ToString
+@Getter
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
+@Jacksonized
 public class ItemDto {
-    private final int id;
-    @NotEmpty
-    private final String name;
+    private int id;
+    @NotBlank
+    private String name;
+    @NotBlank
+    private String description;
     @NotNull
-    private final String description;
-    @NotNull
-    private final Boolean available;
-    private final Integer request;
+    private Boolean available;
+    private Integer requestId;
 }

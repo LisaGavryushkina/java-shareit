@@ -64,6 +64,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>2.14.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -146,6 +152,18 @@
 					<version>0.8.8</version>
 					<configuration>
 						<output>file</output>
+						<excludes>
+							<exclude>ru/practicum/shareit/booking/BookingMapper.class</exclude>
+							<exclude>ru/practicum/shareit/booking/Booking.class</exclude>
+							<exclude>ru/practicum/shareit/item/Comment.class</exclude>
+							<exclude>ru/practicum/shareit/item/CommentMapper.class</exclude>
+							<exclude>ru/practicum/shareit/item/Item.class</exclude>
+							<exclude>ru/practicum/shareit/item/ItemMapper.class</exclude>
+							<exclude>ru/practicum/shareit/request/ItemRequest.class</exclude>
+							<exclude>ru/practicum/shareit/request/ItemRequestMapper.class</exclude>
+							<exclude>ru/practicum/shareit/user/User.class</exclude>
+							<exclude>ru/practicum/shareit/user/UserMapper.class</exclude>
+						</excludes>
 					</configuration>
 					<executions>
 						<execution>

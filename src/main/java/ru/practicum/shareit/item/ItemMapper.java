@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.BookingForItemDto;
 import ru.practicum.shareit.item.ItemRepository.ItemWithBooking;
+import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.User;
 
 @Component
@@ -28,12 +29,13 @@ public class ItemMapper {
         );
     }
 
-    public Item toItem(ItemDto itemDto, User owner) {
+    public Item toItem(ItemDto itemDto, User owner, ItemRequest request) {
         return new Item(0,
                 itemDto.getName(),
                 itemDto.getDescription(),
                 itemDto.getAvailable(),
-                owner);
+                owner,
+                request);
     }
 
     public Item toItemWithUpdate(ItemDto updated, Item item) {

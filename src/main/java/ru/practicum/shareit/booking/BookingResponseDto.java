@@ -2,6 +2,7 @@ package ru.practicum.shareit.booking;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -22,8 +23,10 @@ import ru.practicum.shareit.user.UserDto;
 public class BookingResponseDto {
     private final int id;
     @Setter
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime start;
     @Setter
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime end;
     private final ItemDto item;
     private final UserDto booker;

@@ -3,6 +3,8 @@ package ru.practicum.shareit.item;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.Nullable;
@@ -15,7 +17,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
             " where ( upper(i.name) like upper(concat('%', ?1, '%')) " +
             " or upper(i.description) like upper(concat('%', ?1, '%')) ) " +
             " and i.available = true ")
-    List<Item> findAllByText(String text);
+    Page<Item> findAllByText(String text, Pageable pageable);
 
     @Query(nativeQuery = true, value = "" +
             " select i.id, " +
@@ -36,7 +38,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
             " limit 1 ) as nextBooking " +
             " from items as i " +
             " where i.owner_id = :ownerId ")
-    List<ItemWithBooking> findItemsWithBookingsByOwnerId(int ownerId, LocalDateTime now);
+    Page<ItemWithBooking> findItemsWithBookingsByOwnerId(int ownerId, LocalDateTime now, Pageable pageable);
 
     @Query(nativeQuery = true, value = "" +
             " select i.id, " +
@@ -60,6 +62,10 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
             " from items as i " +
             " where i.id = :itemId ")
     ItemWithBooking findItemWithBookingsByItemId(int itemId, LocalDateTime now);
+
+    List<Item> findAllByRequestIdIn(List<Integer> requestIds);
+
+    List<Item> findAllByRequestId(int requestId);
 
     interface ItemWithBooking {
 
